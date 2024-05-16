@@ -4,6 +4,7 @@ I copied the main wordle from this tutorial: https://www.freecodecamp.org/news/b
 Then, I added customizable features:
 * Number of attempts (3-10)
 * Length of words (3-8)
+* Number of letters already given (1-3)
 
 ### To run app ###
 Run `live-server build` in terminal in `worldleclone` directory
