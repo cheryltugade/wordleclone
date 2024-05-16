@@ -1,6 +1,24 @@
-import { WORDS } from "./words.js";
+import { THREE_LTR_WORDS, 
+    FOUR_LTR_WORDS,
+    FIVE_LTR_WORDS,
+    SIX_LTR_WORDS,
+    SEVEN_LTR_WORDS,
+    EIGHT_LTR_WORDS } from "./words.js";
 
-const NUMBER_OF_GUESSES = 6;
+const wordsMap = {
+    3: THREE_LTR_WORDS,
+    4: FOUR_LTR_WORDS,
+    5: FIVE_LTR_WORDS,
+    6: SIX_LTR_WORDS,
+    7: SEVEN_LTR_WORDS,
+    8: EIGHT_LTR_WORDS
+};
+
+const NUMBER_OF_GIVEN_LTRS = 0;
+const NUMBER_OF_GUESSES = 10;
+const NUMBER_OF_LTRS = 8;
+const WORDS  = wordsMap[NUMBER_OF_LTRS];
+
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
 let nextLetter = 0;
@@ -14,7 +32,7 @@ function initBoard() {
         let row = document.createElement("div")
         row.className = "letter-row"
         
-        for (let j = 0; j < 5; j++) {
+        for (let j = 0; j < NUMBER_OF_LTRS; j++) {
             let box = document.createElement("div")
             box.className = "letter-box"
             row.appendChild(box)
@@ -52,12 +70,12 @@ document.addEventListener("keyup", (e) => {
 })
 
 function insertLetter (pressedKey) {
-    if (nextLetter === 5) {
+    if (nextLetter === NUMBER_OF_LTRS) {
         return
     }
     pressedKey = pressedKey.toLowerCase()
 
-    let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
+    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
     let box = row.children[nextLetter]
     animateCSS(box, "pulse")
     box.textContent = pressedKey
@@ -67,7 +85,7 @@ function insertLetter (pressedKey) {
 }
 
 function deleteLetter () {
-    let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
+    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
     let box = row.children[nextLetter - 1]
     box.textContent = ""
     box.classList.remove("filled-box")
@@ -76,7 +94,7 @@ function deleteLetter () {
 }
 
 function checkGuess () {
-    let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
+    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
     let guessString = ''
     let rightGuess = Array.from(rightGuessString)
 
@@ -84,7 +102,7 @@ function checkGuess () {
         guessString += val
     }
 
-    if (guessString.length != 5) {
+    if (guessString.length != NUMBER_OF_LTRS) {
         toastr.error("Not enough letters!")
         return
     }
@@ -95,7 +113,7 @@ function checkGuess () {
     }
 
     
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < NUMBER_OF_LTRS; i++) {
         let letterColor = ''
         let box = row.children[i]
         let letter = currentGuess[i]
@@ -184,7 +202,7 @@ const animateCSS = (element, animation, prefix = 'animate__') =>
     const animationName = `${prefix}${animation}`;
     // const node = document.querySelector(element);
     const node = element
-    node.style.setProperty('--animate-duration', '0.3s');
+    node.style.setProperty('--animate-duration', '0.8s');
     
     node.classList.add(`${prefix}animated`, animationName);
 
