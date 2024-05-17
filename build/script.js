@@ -15,7 +15,7 @@ const wordsMap = {
 };
 
 const GUTTER_MODE = true;
-const NUMBER_OF_GUESSES = 10;
+const NUMBER_OF_GUESSES = 6;
 const NUMBER_OF_LTRS = 5;
 const WORDS  = wordsMap[NUMBER_OF_LTRS];
 
@@ -28,6 +28,7 @@ console.log(rightGuessString)
 // Variables for gutter mode
 let greenIndices = [];
 let yellowBoxMap = new Map();
+let greyLetters = [];
 
 function initBoard() {
     let board = document.getElementById("game-board");
@@ -120,6 +121,10 @@ function checkGuess () {
 
     if (GUTTER_MODE) {
         let notUsingGreen = false;
+        let placingYellowAgain = false;
+        let notUsingYellow = false;
+        let usingGreyLetters = false;
+        let letterReuseInFirstGuess = false;
 
         // Guessing a different letter in a location that is already green
         greenIndices.forEach((greenIndex) => {
@@ -129,21 +134,44 @@ function checkGuess () {
         });
 
         // Reusing a letter that was already yellow in that same location
-        
-        (i, currentGuess[i])
-
-        // for (let i = 0; i < NUMBER_OF_LTRS; i++) {
-            
-    
-        //     
-        // }
-        
         // Not using a letter that is yellow at all
+        yellowBoxMap.forEach((letter, index) => {
+            if (currentGuess[index] == letter) {
+                placingYellowAgain = true;
+            }
+            if (!currentGuess.includes(letter)) {
+                notUsingYellow = true;
+            }
+        })
 
         // Reusing a letter that is grey
+        let letterSet = new Set();
+        currentGuess.forEach((letter) => {
+            if (greyLetters.includes(letter)) {
+                usingGreyLetters = true;
+            }
+            letterSet.add(letter)
+        });
+
+        // Using a letter more than once in first guess
+        if (guessesRemaining == NUMBER_OF_GUESSES && letterSet.size < NUMBER_OF_LTRS) {
+            letterReuseInFirstGuess = true;
+        }
 
         if (notUsingGreen) {
             toastr.error("Gutter: Not using a green letter/s!")
+            return
+        } else if (placingYellowAgain){
+            toastr.error("Gutter: Placing a letter that was yellow in same box again!")
+            return
+        } else if (notUsingYellow) {
+            toastr.error("Gutter: Not using a letter that was yellow!")
+            return
+        } else if (usingGreyLetters) {
+            toastr.error("Gutter: Using a letter/s that is grey!")
+            return
+        } else if (letterReuseInFirstGuess) {
+            toastr.error("Gutter: Using a letter/s more than once in first guess!")
             return
         }
     }
@@ -157,6 +185,7 @@ function checkGuess () {
         // is letter in the correct guess
         if (letterPosition === -1) {
             letterColor = 'grey'
+            greyLetters.push(currentGuess[i])
         } else {
             // now, letter is definitely in word
             // if letter index and right guess index are the same

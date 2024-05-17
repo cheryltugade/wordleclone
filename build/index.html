@@ -15,7 +15,6 @@
 <body>
     <h1> Customizable Wordle </h1>
     <div id="game-board">
-
     </div>
     <div id="keyboard-cont">
         <div class="first-row">
@@ -52,6 +51,26 @@
             <button class="keyboard-button">m</button>
             <button class="keyboard-button">Enter</button>
         </div>
+    </div>
+
+    <div class="customizer-cont">
+        <h3> Number of Attempts (3-10) </h3>
+        <div class="slidecontainer">
+            <input type="range" min="3" max="10" value="50" class="slider" id="myRange">
+        </div>
+
+        <h3> Word Length (3-8) </h3>
+        <div class="slidecontainer">
+            <input type="range" min="3" max="8" value="50" class="slider" id="myRange">
+        </div>
+
+
+        <h3> Gutter Mode (on/off) </h3>
+
+        <label class="switch">
+            <input type="checkbox">
+            <span class="toggleSlider"></span>
+        </label>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
