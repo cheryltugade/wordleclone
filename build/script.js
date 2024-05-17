@@ -14,9 +14,9 @@ const wordsMap = {
     8: EIGHT_LTR_WORDS
 };
 
-const NUMBER_OF_GIVEN_LTRS = 0;
+const GUTTER_MODE = true;
 const NUMBER_OF_GUESSES = 10;
-const NUMBER_OF_LTRS = 8;
+const NUMBER_OF_LTRS = 5;
 const WORDS  = wordsMap[NUMBER_OF_LTRS];
 
 let guessesRemaining = NUMBER_OF_GUESSES;
@@ -24,6 +24,10 @@ let currentGuess = [];
 let nextLetter = 0;
 let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)]
 console.log(rightGuessString)
+
+// Variables for gutter mode
+let greenIndices = [];
+let yellowBoxMap = new Map();
 
 function initBoard() {
     let board = document.getElementById("game-board");
@@ -107,11 +111,42 @@ function checkGuess () {
         return
     }
 
-    if (!WORDS.includes(guessString)) {
-        toastr.error("Word not in list!")
-        return
+    if (NUMBER_OF_LTRS === 5 ) {
+        if (!WORDS.includes(guessString)) {
+            toastr.error("Word not in list!")
+            return
+        }
     }
 
+    if (GUTTER_MODE) {
+        let notUsingGreen = false;
+
+        // Guessing a different letter in a location that is already green
+        greenIndices.forEach((greenIndex) => {
+            if (currentGuess[greenIndex] !== rightGuess[greenIndex]) {
+                notUsingGreen = true;
+            }
+        });
+
+        // Reusing a letter that was already yellow in that same location
+        
+        (i, currentGuess[i])
+
+        // for (let i = 0; i < NUMBER_OF_LTRS; i++) {
+            
+    
+        //     
+        // }
+        
+        // Not using a letter that is yellow at all
+
+        // Reusing a letter that is grey
+
+        if (notUsingGreen) {
+            toastr.error("Gutter: Not using a green letter/s!")
+            return
+        }
+    }
     
     for (let i = 0; i < NUMBER_OF_LTRS; i++) {
         let letterColor = ''
@@ -129,9 +164,11 @@ function checkGuess () {
             if (currentGuess[i] === rightGuess[i]) {
                 // shade green 
                 letterColor = 'green'
+                greenIndices.push(i);
             } else {
                 // shade box yellow
                 letterColor = 'yellow'
+                yellowBoxMap.set(i, currentGuess[i])
             }
 
             rightGuess[letterPosition] = "#"
