@@ -3,7 +3,9 @@ import { THREE_LTR_WORDS,
     FIVE_LTR_WORDS,
     SIX_LTR_WORDS,
     SEVEN_LTR_WORDS,
-    EIGHT_LTR_WORDS } from "./words.js";
+    EIGHT_LTR_WORDS, 
+    ORRIN_WORDS
+} from "./words.js";
 
 const wordsMap = {
     3: THREE_LTR_WORDS,
@@ -15,8 +17,8 @@ const wordsMap = {
 };
 
 const GUTTER_MODE = true;
-const NUMBER_OF_GUESSES = 6;
-const NUMBER_OF_LTRS = 5;
+const NUMBER_OF_GUESSES = 10;
+const NUMBER_OF_LTRS = 4;
 const WORDS  = wordsMap[NUMBER_OF_LTRS];
 
 let guessesRemaining = NUMBER_OF_GUESSES;
